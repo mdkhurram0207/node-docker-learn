@@ -1,0 +1,21 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  api:
+    build: .
+    container_name: node-api
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/userdb   # 👈 matches your DB name
+    depends_on:
+      - mongo
+
+volumes:
+  mongo-data:
